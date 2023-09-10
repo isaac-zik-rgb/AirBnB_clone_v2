@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-"""Distribute an archive to web servers"""
+"""Create and distributes an archive to web servers"""
 import os.path
-import sys
 import time
 from fabric.api import local
 from fabric.operations import env, put, run
-env.hosts = [ '18.207.142.251', '100.26.20.18']
+
+env.hosts = ['100.26.20.18', '18.207.142.251']
 
 
 def do_pack():
@@ -37,5 +37,15 @@ def do_deploy(archive_path):
         run("ln -s {} /data/web_static/current".format(folder))
         print("Deployment done")
         return True
+
+    except Exception as e:
+        return False
+
+
+def deploy():
+    """Create and distributes an archive to web servers"""
+    try:
+        path = do_pack()
+        return do_deploy(path)
     except Exception as e:
         return False
