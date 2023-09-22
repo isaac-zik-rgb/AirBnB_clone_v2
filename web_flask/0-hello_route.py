@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 # A script that stts a flask web application
 from flask import Flask
-""" start up a flask application running on root"""
 app = Flask(__name__)
 
 @app.route('/', strict_slashes=False)
 def hello():
-    return "Hello HBNB"
+    return "Hello HBNB!"
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0')
