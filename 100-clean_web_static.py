@@ -6,7 +6,7 @@ import time
 from fabric.api import local
 from fabric.operations import env, put, run
 
-env.hosts = ['100.26.20.18', '18.207.142.251']
+env.hosts = ['34.75.39.5', '34.74.147.195']
 
 
 def do_pack():
@@ -17,7 +17,7 @@ def do_pack():
               format(time.strftime("%Y%m%d%H%M%S")))
         return ("versions/web_static_{}.tgz".format(time.
                                                     strftime("%Y%m%d%H%M%S")))
-    except Exception as e:
+    except:
         return None
 
 
@@ -25,6 +25,7 @@ def do_deploy(archive_path):
     """Distribute an archive to web servers."""
     if (os.path.isfile(archive_path) is False):
         return False
+
     try:
         file = archive_path.split("/")[-1]
         folder = ("/data/web_static/releases/" + file.split(".")[0])
@@ -38,7 +39,7 @@ def do_deploy(archive_path):
         run("ln -s {} /data/web_static/current".format(folder))
         print("Deployment done")
         return True
-    except Exception as e:
+    except:
         return False
 
 
@@ -47,7 +48,7 @@ def deploy():
     try:
         path = do_pack()
         return do_deploy(path)
-    except Exception as e:
+    except:
         return False
 
 
@@ -55,15 +56,17 @@ def do_clean(number=0):
     """Delete out-of-date archives.
 
     Args:
-    number (int, optional): Number of archives to keep.
+        number (int, optional): Number of archives to keep.
     """
     number = 1 if int(number) == 0 else int(number)
+
     archives = sorted(os.listdir("versions"))
     [archives.pop() for i in range(number)]
     with lcd("versions"):
         [local("rm ./{}".format(a)) for a in archives]
-        with cd("/data/web_static/releases"):
-            archives = run("ls -tr").split()
-            archives = [a for a in archives if "web_static_" in a]
-            [archives.pop() for i in range(number)]
-            [run("rm -rf ./{}".format(a)) for a in archives]
+
+    with cd("/data/web_static/releases"):
+        archives = run("ls -tr").split()
+        archives = [a for a in archives if "web_static_" in a]
+        [archives.pop() for i in range(number)]
+        [run("rm -rf ./{}".format(a)) for a in archives]

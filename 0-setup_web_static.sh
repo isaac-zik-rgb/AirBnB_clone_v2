@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Setup nginx web server for the deployment of webv_static
+# Setup a web servers for the deployment of web_static.
 apt update -y
 apt install -y nginx
 mkdir -p /data/web_static/releases/test/

@@ -28,14 +28,15 @@ class DBStorage:
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(user, passwd, host, db),
                                       pool_pre_ping=True)
+
         if env == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """returns a dictionary
-            Return:
+        Return:
             returns a dictionary of __object
-            """
+        """
         dic = {}
         if cls:
             if type(cls) is str:
@@ -44,14 +45,14 @@ class DBStorage:
             for elem in query:
                 key = "{}.{}".format(type(elem).__name__, elem.id)
                 dic[key] = elem
-            else:
-                lista = [State, City, User, Place, Review, Amenity]
-                for clase in lista:
-                    query = self.__session.query(clase)
-                    for elem in query:
-                        key = "{}.{}".format(type(elem).__name__, elem.id)
-                        dic[key] = elem
-            return (dic)
+        else:
+            lista = [State, City, User, Place, Review, Amenity]
+            for clase in lista:
+                query = self.__session.query(clase)
+                for elem in query:
+                    key = "{}.{}".format(type(elem).__name__, elem.id)
+                    dic[key] = elem
+        return (dic)
 
     def new(self, obj):
         """add a new element in the table
@@ -60,7 +61,7 @@ class DBStorage:
 
     def save(self):
         """save changes
-                    """
+        """
         self.__session.commit()
 
     def delete(self, obj=None):
