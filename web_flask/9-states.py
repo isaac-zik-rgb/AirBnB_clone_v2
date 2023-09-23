@@ -12,7 +12,7 @@ storage.all()
 @app.teardown_appcontext
 def teardown_data(self):
     """
-    refrech data
+        refrech data
     """
     storage.close()
 
@@ -21,7 +21,7 @@ def teardown_data(self):
 @app.route("/states/<id>", strict_slashes=False)
 def states_id(id=None):
     """
-    list state by id if found
+        list state by id if found
     """
     info = []
     states = storage.all(State)
@@ -31,7 +31,7 @@ def states_id(id=None):
     else:
         id = 'State.' + id
         info = states.get(id)
-        return render_template('9-states.html', states=info, id=id)
+    return render_template('9-states.html', states=info, id=id)
     return render_template('9-states.html', state=id)
 
 
